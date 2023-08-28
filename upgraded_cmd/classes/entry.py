@@ -1,5 +1,9 @@
+import sys
 import asyncio
-import msvcrt
+if sys.platform == 'win32':
+    from msvcrt import getch
+else:
+    from getch import getch
 
 
 class Node:
@@ -192,7 +196,7 @@ class Entry(metaclass=MetaCMD):
 
     @staticmethod
     async def get_char():
-        return await asyncio.to_thread(msvcrt.getch)
+        return await asyncio.to_thread(getch)
 
     def process(self, string: bytes):
         return GLOBAL_TRIE.process(self, string, string)
