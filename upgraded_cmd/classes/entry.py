@@ -4,7 +4,8 @@ if sys.platform == 'win32':
     from msvcrt import getch
 else:
     import getch as __g
-    getch = lambda: bytes(__g.getch())
+    getch = lambda: __g.getch().encode()
+
 
 
 class Node:
