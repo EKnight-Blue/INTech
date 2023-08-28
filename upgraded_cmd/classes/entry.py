@@ -1,8 +1,8 @@
 import sys
 import asyncio
-from msvcrt import getch
 if sys.platform != 'win32':
     raise ImportError('I only run on windows')
+from msvcrt import getch
 
 
 class Node:
