@@ -3,7 +3,8 @@ import asyncio
 if sys.platform == 'win32':
     from msvcrt import getch
 else:
-    from getch import getch
+    import getch
+    getch = lambda: bytes(getch.getch())
 
 
 class Node:
