@@ -1,11 +1,8 @@
 import sys
 import asyncio
-if sys.platform == 'win32':
-    from msvcrt import getch
-else:
-    import getch as __g
-    getch = lambda: __g.getch().encode()
-
+from msvcrt import getch
+if sys.platform != 'win32':
+    raise ImportError('I only run on windows')
 
 
 class Node:
@@ -44,7 +41,6 @@ class TryDecodeChar(Node):
             return True
         try:
             s = string.decode()
-            # s = str(string)
             entry.append_char(s)
         except UnicodeDecodeError:
             pass
