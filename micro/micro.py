@@ -22,7 +22,7 @@ class Order:
         return int.to_bytes((((id_ << 4) | comp) << 32) | arg, 5, 'big')
 
     @staticmethod
-    def read(message: bytes | None):
+    def read(message: bytes):
         if message is None:
             return
         arg1, arg2 = (message[1] << 8) | message[2], (message[3] << 8) | message[4]
