@@ -51,7 +51,7 @@ class RobotController(Controller, MicroManager):
                 ))
             self.send_arc = False
             date = time.perf_counter()
-            while time.perf_counter() - date < 0.01:
+            while time.perf_counter() - date < 0.1:
                 self.receive()
         self.terminate()
 
