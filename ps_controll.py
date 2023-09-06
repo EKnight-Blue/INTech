@@ -33,7 +33,7 @@ class RobotController(Controller, MicroManager):
         try:
             while True:
                 for event in self.get_events():
-                    getattr(self, self.mapping.get((event.tye, event.button), 'do_nothing'))(event)
+                    getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
                 if self.send_arc:
                     self.send_order(m_cst.MOTION_UC, Order.to_bytes(
                         m_cst.ARC, m_cst.INCR,
