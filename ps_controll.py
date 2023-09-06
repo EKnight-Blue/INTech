@@ -42,7 +42,7 @@ class RobotController(Controller, MicroManager):
             if self.send_arc:
                 print(f'sent {self.dist_incr = }; {self.dir_incr = }')
                 self.send_order(m_cst.MOTION_UC, Order.to_bytes(
-                    m_cst.ARC, m_cst.INCR,
+                    m_cst.ARC, m_cst.DEFINED,
                     arg2=Order.unsigned_short(self.dist_incr),
                     arg1=Order.unsigned_short(self.dir_incr)
                 ))
