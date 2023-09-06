@@ -17,11 +17,11 @@ class RobotController(Controller, MicroManager):
         pass
 
     def joy_ly(self, event):
-        self.dist_incr = event.value
+        self.dist_incr = -event.value
         self.send_arc = True
 
     def joy_rx(self, event):
-        self.dir_incr = event.value // 2
+        self.dir_incr = -event.value // 2
         self.send_arc = True
 
     mapping = {
@@ -43,9 +43,10 @@ class RobotController(Controller, MicroManager):
                     ))
                 self.send_arc = False
                 date = time.perf_counter()
-                while time.perf_counter() - date < 0.05:
+                while time.perf_counter() - date < 0.1:
                     self.receive()
         except KeyboardInterrupt:
+            self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
             print("Closing")
         self.terminate()
 
