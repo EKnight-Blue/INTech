@@ -17,11 +17,11 @@ class RobotController(Controller, MicroManager):
         pass
 
     def joy_ly(self, event):
-        self.dist_incr = -event.value // 16
+        self.dist_incr = -event.value
         self.send_arc = True
 
     def joy_rx(self, event):
-        self.dir_incr = -event.value // 8
+        self.dir_incr = -event.value // 2
         self.send_arc = True
 
     def options(self, event):
