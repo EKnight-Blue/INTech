@@ -6,7 +6,7 @@ import time
 
 
 class RobotController(Controller, MicroManager):
-    send_arc = False
+    send_arc = running = False
 
     def __init__(self):
         Controller.__init__(self)
@@ -24,6 +24,9 @@ class RobotController(Controller, MicroManager):
         self.dir_incr = -event.value // 2
         self.send_arc = True
 
+    def options(self, event):
+        self.running = False
+
     mapping = {
         (c_cst.ANALOG, c_cst.LY): 'joy_ly',
         (c_cst.ANALOG, c_cst.RX): 'joy_rx'
@@ -32,7 +35,8 @@ class RobotController(Controller, MicroManager):
     def mainloop(self):
         self.start()
         try:
-            while True:
+            self.running = True
+            while self.running:
                 for event in self.get_events():
                     getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
                 if self.send_arc:
@@ -46,8 +50,8 @@ class RobotController(Controller, MicroManager):
                 while time.perf_counter() - date < 0.1:
                     self.receive()
         except KeyboardInterrupt:
-            self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
             print("Closing")
+        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
         self.terminate()
 
 
