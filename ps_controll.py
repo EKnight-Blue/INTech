@@ -41,6 +41,7 @@ class RobotController(Controller, MicroManager):
                         arg1=Order.unsigned_short(self.dir_incr),
                         arg2=Order.unsigned_short(self.dist_incr)
                     ))
+                self.send_arc = False
                 date = time.perf_counter()
                 while time.perf_counter() - date < 0.05:
                     self.receive()
