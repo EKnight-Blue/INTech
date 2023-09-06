@@ -47,7 +47,7 @@ class RobotController(Controller, MicroManager):
                     ))
                 self.send_arc = False
                 date = time.perf_counter()
-                while time.perf_counter() - date < 0.1:
+                while time.perf_counter() - date < 0.01:
                     self.receive()
         except KeyboardInterrupt:
             print("Closing")
