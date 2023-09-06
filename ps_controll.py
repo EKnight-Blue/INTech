@@ -25,6 +25,7 @@ class RobotController(Controller, MicroManager):
         self.send_arc = True
 
     def options(self, event):
+        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
         self.running = False
 
     mapping = {
@@ -35,7 +36,6 @@ class RobotController(Controller, MicroManager):
 
     def terminate(self):
         Controller.terminate(self)
-        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
 
     def mainloop(self):
         self.start()
