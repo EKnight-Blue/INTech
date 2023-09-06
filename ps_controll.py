@@ -29,7 +29,8 @@ class RobotController(Controller, MicroManager):
 
     mapping = {
         (c_cst.ANALOG, c_cst.LY): 'joy_ly',
-        (c_cst.ANALOG, c_cst.RX): 'joy_rx'
+        (c_cst.ANALOG, c_cst.RX): 'joy_rx',
+        (c_cst.DIGITAL, c_cst.OPTIONS): 'options'
     }
 
     def terminate(self):
@@ -52,6 +53,7 @@ class RobotController(Controller, MicroManager):
             date = time.perf_counter()
             while time.perf_counter() - date < 0.01:
                 self.receive()
+        self.terminate()
 
 
 if __name__ == '__main__':
