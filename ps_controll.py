@@ -21,7 +21,7 @@ class RobotController(Controller, MicroManager):
         self.send_arc = True
 
     def joy_rx(self, event):
-        self.dir_incr = -event.value // 2
+        self.dir_incr = -event.value // 4
         self.send_arc = True
 
     def options(self, event):
