@@ -25,7 +25,6 @@ class RobotController(Controller, MicroManager):
         self.send_arc = True
 
     def options(self, event):
-        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
         self.running = False
 
     mapping = {
@@ -34,9 +33,6 @@ class RobotController(Controller, MicroManager):
         (c_cst.DIGITAL, c_cst.OPTIONS): 'options'
     }
 
-    def terminate(self):
-        Controller.terminate(self)
-
     def mainloop(self):
         self.start()
         self.running = True
@@ -44,6 +40,7 @@ class RobotController(Controller, MicroManager):
             for event in self.get_events():
                 getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
             if self.send_arc:
+                print(f'sent {self.dist_incr = }; {self.dir_incr = }')
                 self.send_order(m_cst.MOTION_UC, Order.to_bytes(
                     m_cst.ARC, m_cst.INCR,
                     arg1=Order.unsigned_short(self.dir_incr),
@@ -53,6 +50,11 @@ class RobotController(Controller, MicroManager):
             date = time.perf_counter()
             while time.perf_counter() - date < 0.1:
                 self.receive()
+
+        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
+        date = time.perf_counter()
+        while time.perf_counter() - date < 1:
+            self.receive()
         self.terminate()
 
 
