@@ -2,6 +2,7 @@ from controller import Controller
 import controller.constants as c_cst
 from micro import Order, MicroManager
 import micro.consts as m_cst
+import time
 
 
 class RobotController(Controller, MicroManager):
@@ -40,6 +41,9 @@ class RobotController(Controller, MicroManager):
                         arg1=Order.unsigned_short(self.dir_incr),
                         arg2=Order.unsigned_short(self.dist_incr)
                     ))
+                date = time.perf_counter()
+                while time.perf_counter() - date < 0.05:
+                    self.receive()
         except KeyboardInterrupt:
             print("Closing")
         self.terminate()
