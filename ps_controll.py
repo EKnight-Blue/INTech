@@ -53,7 +53,7 @@ class RobotController(Controller, MicroManager):
                 # ))
             self.send_arc = False
             date = time.perf_counter()
-            while time.perf_counter() - date < 0.1:
+            while time.perf_counter() - date < 0.05:
                 self.receive()
 
         self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
