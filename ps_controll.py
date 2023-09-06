@@ -32,28 +32,31 @@ class RobotController(Controller, MicroManager):
         (c_cst.ANALOG, c_cst.RX): 'joy_rx'
     }
 
+    def terminate(self):
+        Controller.terminate(self)
+        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
+
     def mainloop(self):
         self.start()
-        try:
-            self.running = True
-            while self.running:
-                for event in self.get_events():
-                    getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
-                if self.send_arc:
-                    self.send_order(m_cst.MOTION_UC, Order.to_bytes(
-                        m_cst.ARC, m_cst.INCR,
-                        arg1=Order.unsigned_short(self.dir_incr),
-                        arg2=Order.unsigned_short(self.dist_incr)
-                    ))
-                self.send_arc = False
-                date = time.perf_counter()
-                while time.perf_counter() - date < 0.01:
-                    self.receive()
-        except KeyboardInterrupt:
-            print("Closing")
-        self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
-        self.terminate()
+        self.running = True
+        while self.running:
+            for event in self.get_events():
+                getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
+            if self.send_arc:
+                self.send_order(m_cst.MOTION_UC, Order.to_bytes(
+                    m_cst.ARC, m_cst.INCR,
+                    arg1=Order.unsigned_short(self.dir_incr),
+                    arg2=Order.unsigned_short(self.dist_incr)
+                ))
+            self.send_arc = False
+            date = time.perf_counter()
+            while time.perf_counter() - date < 0.01:
+                self.receive()
 
 
 if __name__ == '__main__':
-    RobotController().mainloop()
+    r = RobotController()
+    try:
+        r.mainloop()
+    except KeyboardInterrupt:
+        r.terminate()
