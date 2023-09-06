@@ -5,10 +5,10 @@ ORDER_NAMES = 'IDE RAW GET SET ARC TRA ___ ___ ___ ___ ___ ___ ___ ___ ___ ___'.
 ORDER_TARGETS = (
     GENERIC_UC, MOTION_UC, GENERIC_UC, GENERIC_UC, MOTION_UC
 )
+ARC_MODES = RAMP, TRAPEZOID, DEFINED = range(3)
 
-
-VARIABLES = DIST_KP, DIST_KI, DIST_KD, DIR_KP, DIR_KI, DIR_KD, K_ALI, MOTION_SPEED, ACCELERATION = range(9)
-VARIABLE_NAMES = 'distKp distKi distKd dirKp dirKi dirKd Kali motion_speed acceleration'.split()
+VARIABLES = DIST_KP, DIST_KI, DIST_KD, DIR_KP, DIR_KI, DIR_KD, K_ALI, MOTION_SPEED, ACCELERATION, INCR = range(10)
+VARIABLE_NAMES = 'distKp distKi distKd dirKp dirKi dirKd Kali motion_speed acceleration incr'.split()
 
 FEEDBACKS = ACK, IDE, TER, VAR, TRA, _, _, _, _, _, _, _, _, _, _, _ = range(16)
 FEEDBACK_NAMES = 'ACK IDE TER VAR TRA ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___'.split()

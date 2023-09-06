@@ -165,9 +165,9 @@ def _set(self: BaseShell, variable, value):
 
 
 @command
-@parse(Order.unsigned_short, Order.unsigned_short, append=bool)
-def arc(self: BaseShell, distance, direction, append=False):
-    self.send_order(MOTION_UC, Order.to_bytes(ARC, append, arg1=direction, arg2=distance))
+@parse(Order.unsigned_short, Order.unsigned_short, append=bool, mode=int)
+def arc(self: BaseShell, distance, direction, append=False, mode=TRAPEZOID):
+    self.send_order(MOTION_UC, Order.to_bytes(ARC, 8 * append | mode, arg1=direction, arg2=distance))
     if self.track:
         self.wait_track()
 
