@@ -43,8 +43,8 @@ class RobotController(Controller, MicroManager):
                 print(f'sent {self.dist_incr = }; {self.dir_incr = }')
                 self.send_order(m_cst.MOTION_UC, Order.to_bytes(
                     m_cst.RAW_MOVE, 0,
-                    arg1=Order.unsigned_short(self.dir_incr),
-                    arg2=Order.unsigned_short(self.dist_incr)
+                    arg1=Order.unsigned_short((self.dist_incr-self.dir_incr) // 2),
+                    arg2=Order.unsigned_short((self.dist_incr + self.dir_incr) // 2)
                 ))
             self.send_arc = False
             date = time.perf_counter()
