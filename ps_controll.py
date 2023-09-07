@@ -21,7 +21,7 @@ class RobotController(Controller, MicroManager):
         self.send_arc = True
 
     def joy_rx(self, event):
-        self.dir_incr = -event.value // 4
+        self.dir_incr = -event.value // 4 
         self.send_arc = True
 
     def options(self, event):
@@ -41,11 +41,14 @@ class RobotController(Controller, MicroManager):
                 getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
             if self.send_arc:
                 print(f'sent {self.dist_incr = }; {self.dir_incr = }')
-                self.send_order(m_cst.MOTION_UC, Order.to_bytes(
-                    m_cst.ARC, m_cst.DEFINED,
-                    arg2=Order.unsigned_short(self.dist_incr),
-                    arg1=Order.unsigned_short(self.dir_incr)
-                ))
+                if not self.dir_incr and not self.dist_incr:
+                    self.send_order(m_cst.MOTION_UC, Order.to_bytes(m_cst.RAW_MOVE, 0, arg=0))
+                else:
+                    self.send_order(m_cst.MOTION_UC, Order.to_bytes(
+                        m_cst.ARC, m_cst.DEFINED,
+                        arg2=Order.unsigned_short(self.dist_incr),
+                        arg1=Order.unsigned_short(self.dir_incr)
+                    ))
                 # self.send_order(m_cst.MOTION_UC, Order.to_bytes(
                 #     m_cst.RAW_MOVE, 0,
                 #     arg1=Order.unsigned_short((self.dist_incr - self.dir_incr) // 2),
