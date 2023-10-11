@@ -1,5 +1,6 @@
 import struct
 from controller.constants import *
+import os
 
 
 class Event:
@@ -23,7 +24,7 @@ class ControllerButtons:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while f.readable():
+                while os.path.exists(self.file):
                     # read will block, that's why i use processes
                     self.queue.put(Event(*struct.unpack(self.event_format, f.read(self.event_length))[:2:-1]))
         except KeyboardInterrupt:
@@ -40,7 +41,7 @@ class ControllerMouse:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while f.readable():
+                while os.path.exists(self.file):
                     # will block, that's why i use processes
                     h, dx, dy = f.read(self.event_length)
                     if (h & 1) ^ self.pad_state:
