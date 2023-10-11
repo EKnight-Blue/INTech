@@ -32,7 +32,10 @@ if __name__ == '__main__':
     c.start()
     print("Now listening")
     try:
+        print('Listen')
         for ev in c.get_events():
+            print("Got an event")
             print(ev)
+        print('Ended')
     except KeyboardInterrupt:
         c.terminate()
