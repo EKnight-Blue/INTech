@@ -23,7 +23,7 @@ class ControllerButtons:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while True:
+                while f.readable():
                     # read will block, that's why i use processes
                     self.queue.put(Event(*struct.unpack(self.event_format, f.read(self.event_length))[:2:-1]))
         except KeyboardInterrupt:
