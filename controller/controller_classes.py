@@ -40,7 +40,7 @@ class ControllerMouse:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while True:
+                while f.readable():
                     # will block, that's why i use processes
                     h, dx, dy = f.read(self.event_length)
                     if (h & 1) ^ self.pad_state:
