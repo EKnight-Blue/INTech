@@ -1,6 +1,5 @@
 import struct
 from controller.constants import *
-import os
 
 
 class Event:
@@ -24,11 +23,13 @@ class ControllerButtons:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while os.path.exists(self.file):
+                while True:
                     # read will block, that's why i use processes
                     self.queue.put(Event(*struct.unpack(self.event_format, f.read(self.event_length))[:2:-1]))
         except KeyboardInterrupt:
             print('Terminated Controller Process')
+        except OSError:
+            print('Controller Disconnected')
 
 
 class ControllerMouse:
@@ -41,7 +42,7 @@ class ControllerMouse:
     def mainloop(self):
         try:
             with open(self.file, 'rb') as f:
-                while os.path.exists(self.file):
+                while True:
                     # will block, that's why i use processes
                     h, dx, dy = f.read(self.event_length)
                     if (h & 1) ^ self.pad_state:
@@ -51,3 +52,5 @@ class ControllerMouse:
                     self.queue.put(Event(h & 1, 3, ((dx - 256 if dx > 128 else dx), dy - 256 if dy > 128 else dy)))
         except KeyboardInterrupt:
             print('Terminated Mouse Process')
+        except OSError:
+            print('Controller Disconnected')
