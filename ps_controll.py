@@ -79,3 +79,4 @@ if __name__ == '__main__':
             r.mainloop()
         except KeyboardInterrupt:
             r.terminate()
+            break
