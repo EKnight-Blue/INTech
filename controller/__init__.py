@@ -24,6 +24,9 @@ class Controller:
         self.controllerMouseProcess.terminate()
         self.controllerButtonsProcess.terminate()
 
+    def is_alive(self):
+        return self.controllerMouseProcess.is_alive() or self.controllerButtonsProcess.is_alive()
+
 
 if __name__ == '__main__':
     print("Creating controller")
@@ -34,7 +37,7 @@ if __name__ == '__main__':
     try:
         print('Listen')
 
-        while c.controllerMouseProcess.is_alive() or c.controllerButtonsProcess.is_alive():
+        while c.is_alive():
             for ev in c.get_events():
                 print(ev)
         print('Ended')

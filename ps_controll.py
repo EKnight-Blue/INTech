@@ -3,6 +3,7 @@ import controller.constants as c_cst
 from micro import Order, MicroManager
 import micro.consts as m_cst
 import time
+import os
 
 
 class RobotController(Controller, MicroManager):
@@ -36,7 +37,7 @@ class RobotController(Controller, MicroManager):
     def mainloop(self):
         self.start()
         self.running = True
-        while self.running:
+        while self.running and self.is_alive():
             for event in self.get_events():
                 getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
             if self.send_arc:
@@ -67,8 +68,14 @@ class RobotController(Controller, MicroManager):
 
 
 if __name__ == '__main__':
-    r = RobotController()
-    try:
-        r.mainloop()
-    except KeyboardInterrupt:
-        r.terminate()
+    while True:
+        try:
+            while not os.path.exists('/dev/input/js0') or not os.path.exists('/dev/input/mouse0'):
+                continue
+        except KeyboardInterrupt:
+            break
+        r = RobotController()
+        try:
+            r.mainloop()
+        except KeyboardInterrupt:
+            r.terminate()
