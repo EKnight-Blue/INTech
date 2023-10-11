@@ -70,8 +70,10 @@ class RobotController(Controller, MicroManager):
 if __name__ == '__main__':
     while True:
         try:
+            print('Waiting for joystick')
             while not os.path.exists('/dev/input/js0') or not os.path.exists('/dev/input/mouse0'):
                 continue
+            print('Joystick Detected')
         except KeyboardInterrupt:
             break
         r = RobotController()
@@ -80,3 +82,5 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             r.terminate()
             break
+        print('Joystick Disconnected')
+    print('Terminated')
