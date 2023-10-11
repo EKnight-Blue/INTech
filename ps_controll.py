@@ -27,6 +27,8 @@ class RobotController(Controller, MicroManager):
 
     def ps(self, event):
         os.system('./disconnect.sh')
+        while self.is_alive():
+            continue
 
     mapping = {
         (c_cst.ANALOG, c_cst.LY): 'joy_ly',
