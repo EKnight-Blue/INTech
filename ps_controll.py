@@ -7,7 +7,7 @@ import os
 
 
 class RobotController(Controller, MicroManager):
-    send_arc = running = False
+    send_arc = False
 
     def __init__(self):
         Controller.__init__(self)
@@ -25,19 +25,18 @@ class RobotController(Controller, MicroManager):
         self.dir_incr = -event.value // 4 
         self.send_arc = True
 
-    def options(self, event):
-        self.running = False
+    def ps(self, event):
+        os.system('./disconnect.sh')
 
     mapping = {
         (c_cst.ANALOG, c_cst.LY): 'joy_ly',
         (c_cst.ANALOG, c_cst.RX): 'joy_rx',
-        (c_cst.DIGITAL, c_cst.OPTIONS): 'options'
+        (c_cst.DIGITAL, c_cst.PS): 'ps'
     }
 
     def mainloop(self):
         self.start()
-        self.running = True
-        while self.running and self.is_alive():
+        while self.is_alive():
             for event in self.get_events():
                 getattr(self, self.mapping.get((event.type, event.button), 'do_nothing'))(event)
             if self.send_arc:
