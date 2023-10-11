@@ -13,10 +13,7 @@ class Controller:
         self.controllerMouseProcess = Process(target=ControllerMouse(self.queue, mouse_file).mainloop)
 
     def get_events(self):
-        while True:
-            while self.queue.empty():
-                if not (self.controllerMouseProcess.is_alive() or self.controllerButtonsProcess.is_alive()):
-                    return
+        while not self.queue.empty():
             yield self.queue.get()
 
     def start(self):
@@ -36,8 +33,10 @@ if __name__ == '__main__':
     print("Now listening")
     try:
         print('Listen')
-        for ev in c.get_events():
-            print(ev)
+
+        while c.controllerMouseProcess.is_alive() or c.controllerButtonsProcess.is_alive():
+            for ev in c.get_events():
+                print(ev)
         print('Ended')
     except KeyboardInterrupt:
         c.terminate()
