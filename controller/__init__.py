@@ -14,6 +14,9 @@ class Controller:
 
     def get_events(self):
         while True:
+            while self.queue.empty():
+                if not (self.controllerMouseProcess.is_alive() or self.controllerButtonsProcess.is_alive()):
+                    return
             yield self.queue.get()
 
     def start(self):
@@ -34,7 +37,6 @@ if __name__ == '__main__':
     try:
         print('Listen')
         for ev in c.get_events():
-            print("Got an event")
             print(ev)
         print('Ended')
     except KeyboardInterrupt:
