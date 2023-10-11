@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import json
 
+
 def is_flag(string: str):
     if not string.startswith('-'):
         return False
@@ -217,6 +218,7 @@ def _exit(self, s=False):
 
 
 Shell = type('Shell', (BaseShell, cmd.Cmd), cmds)
+
 
 if __name__ == '__main__':
     Shell().cmdloop()

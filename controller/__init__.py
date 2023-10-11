@@ -26,8 +26,11 @@ class Controller:
 
 
 if __name__ == '__main__':
+    print("Creating controller")
     c = Controller()
+    print("Controller created")
     c.start()
+    print("Now listening")
     try:
         for ev in c.get_events():
             print(ev)
