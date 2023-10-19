@@ -142,7 +142,7 @@ def reset(self: BaseShell):
 
 
 @command
-@parse(Order.signed_short, Order.signed_short, time=bool, dist=bool, dire=bool, ali=bool)
+@parse(Order.unsigned_short, Order.unsigned_short, time=bool, dist=bool, dire=bool, ali=bool)
 def raw(self: BaseShell, left, right, timer=False, dist=False, dire=False, ali=False):
     self.send_order(MOTION_UC, Order.to_bytes(RAW_MOVE,  8 * timer + 4 * dist + 2 * dire + ali, arg1=left, arg2=right))
 
